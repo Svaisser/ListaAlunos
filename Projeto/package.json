@@ -13,7 +13,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "João Svaisser <joao.svaisser@betha.com>",
   "license": "ISC",
   "description": ""
 }
