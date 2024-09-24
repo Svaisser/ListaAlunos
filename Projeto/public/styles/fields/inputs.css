@@ -1,5 +1,6 @@
 
-input, textarea, select {
+input, select {
+
     appearance: none;
     width: 100%;
     border-radius: .5rem;
@@ -50,17 +51,7 @@ select {
     gap: 1.25rem;
 }
 
-.input-wrapper:has([disabled]) {
-    opacity: .5;
-}
-
 input {
-    &[disabled] {
-        background: var(--surface-disabled);
-        cursor: not-allowed;
-        border: 1px solid var(--stroke-default);
-        color: var(--text-primary);
-    }
 
     &:invalid{
         border: 0.125rem solid var(--semantic-error);

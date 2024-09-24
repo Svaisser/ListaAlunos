@@ -6,7 +6,6 @@ form {
 
 fieldset {
     border: none;
-
     display: grid;
     gap: 1.5rem;
 }
@@ -18,10 +17,4 @@ legend {
 
 fieldset + fieldset {
     margin-top: 3rem;
-}
-
-.actions-wrapper {
-    margin-block: 3rem;
-    display: flex;
-    gap: 1.5rem;
 }

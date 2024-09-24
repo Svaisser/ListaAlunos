@@ -1,8 +1,7 @@
 main {
     overflow: auto;
     padding: 4rem;
-    max-width: 1200px;
-    display: flex;
+    max-width: 1360px;
     margin-block: 5rem;
     margin-inline: auto;
     background-color: #FFFFFF;

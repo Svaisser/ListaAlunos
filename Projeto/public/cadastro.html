@@ -7,7 +7,8 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact List</title>
+  <title>Lista Alunos</title>
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
 
   <link rel="stylesheet" href="./styles/index.css">
@@ -17,7 +18,7 @@
 
   <script>
     angular.module('meuApp', [])
-      .controller('MeuController', function ($scope, $http , $window) {
+      .controller('MeuController', function ($scope, $http, $window) {
         $scope.listaPessoas = [];
         $scope.ErroInclusao = "";
 
@@ -37,12 +38,29 @@
           "esporte": ""
         }
 
+        $scope.formatPhone = function () {
+          let phone = $scope.frmMatricula.telefone.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+          if (phone.length > 10) {
+            phone = phone.slice(0, 11); // Limita a 11 caracteres
+          }
+
+          // Adiciona a máscara
+          if (phone.length > 6) {
+            phone = phone.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+          } else if (phone.length > 2) {
+            phone = phone.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+          }
+
+          $scope.frmMatricula.telefone = phone; // Atualiza o modelo
+        };
+
         $scope.adicionarPessoa = function () {
           $scope.ErroInclusao = ''; // Limpa erros anteriores
 
           // Campos obrigatórios
           var crianca = $scope.frmMatricula.nomeCrianca;
-          var dataN = $scope.frmMatricula.dataNascimento;
+          var dataN = new Date($scope.frmMatricula.dataNascimento).toLocaleDateString('pt-BR');
           var gender = $scope.frmMatricula.genero;
           var cep = $scope.frmMatricula.cep;
           var rua = $scope.frmMatricula.rua;
@@ -136,8 +154,6 @@
             "turno": "",
             "esporte": ""
           };
-
-          $scope.exibirFormularioInclusao = false;
         };
 
       });
@@ -149,8 +165,10 @@
   <main ng-controller="MeuController">
     <div class="main-container">
       <div class="back">
-        <img src="./assets/icons/arrow-left-02.svg" alt="Ícone de voltar">
-        <span>Voltar</span>
+        <a href="./index.html">
+          <img src="./assets/icons/arrow-left-02.svg" alt="Ícone de voltar">
+          <span>Voltar</span>
+        </a>
       </div>
 
       <h1>Formulário de matrícula</h1>
@@ -165,23 +183,20 @@
             <label for="fullname">Nome completo</label>
             <input type="text" id="fullname" name="fullname" placeholder="Qual o nome da criança?"
               ng-model="frmMatricula.nomeCrianca">
-            <p>nomeCrianca selecionado: {{ frmMatricula.nomeCrianca }}</p>
           </div>
 
           <div class="input-wrapper">
             <label for="birth">Data de nascimento</label>
             <input type="date" id="birth" name="birth" lang="pt-BR" ng-model="frmMatricula.dataNascimento">
-            <p>data selecionado: {{ frmMatricula.dataNascimento }}</p>
           </div>
 
           <div class="select-wrapper">
             <label for="gender">Gênero</label>
             <select id="gender" name="gender" ng-model="frmMatricula.genero">
               <option value="">Selecione o gênero</option>
-              <option value="male">Masculino</option>
-              <option value="female">Feminino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
             </select>
-            <p>Gênero selecionado: {{ frmMatricula.genero }}</p>
           </div>
 
         </fieldset>
@@ -192,19 +207,16 @@
           <div class="input-wrapper">
             <label for="cep">CEP</label>
             <input type="text" id="cep" name="cep" ng-model="frmMatricula.cep" placeholder="00000-000">
-            <p>cep selecionado: {{ frmMatricula.cep }}</p>
           </div>
 
           <div class="flex">
             <div class="input-wrapper flex-2">
               <label for="street">Rua</label>
               <input type="text" id="street" name="street" ng-model="frmMatricula.rua">
-              <p>rua selecionado: {{ frmMatricula.rua }}</p>
             </div>
             <div class="input-wrapper flex-1">
               <label for="number">Número</label>
               <input type="number" id="number" name="number" ng-model="frmMatricula.numero">
-              <p>numero selecionado: {{ frmMatricula.numero }}</p>
             </div>
           </div>
 
@@ -212,12 +224,10 @@
             <div class="input-wrapper flex-2">
               <label for="city">Cidade</label>
               <input type="text" id="city" name="city" ng-model="frmMatricula.cidade">
-              <p>cidade selecionado: {{ frmMatricula.cidade }}</p>
             </div>
             <div class="input-wrapper flex-1">
               <label for="state">Estado</label>
               <input type="text" id="state" name="state" ng-model="frmMatricula.estado">
-              <p>estado selecionado: {{ frmMatricula.estado }}</p>
             </div>
           </div>
 
@@ -230,20 +240,18 @@
             <label for="guardian">Nome do responsável</label>
             <input type="text" id="guardian" name="guardian" ng-model="frmMatricula.nomeResp">
             <small>Principal responsável legal e contato de emergência</small>
-            <p>nomeResp selecionado: {{ frmMatricula.nomeResp }}</p>
           </div>
 
           <div class="class-wrapper">
             <label for="phone">Telefone</label>
-            <input type="tel" name="phone" id="phone" placeholder="(11) 99999-9999" ng-model="frmMatricula.telefone">
-            <p>telefone selecionado: {{ frmMatricula.telefone }}</p>
+            <input type="tel" name="phone" id="phone" placeholder="(11) 99999-9999" ng-model="frmMatricula.telefone"
+              ng-change="formatPhone()">
           </div>
 
           <div class="input-wrapper">
             <label for="mail">E-mail</label>
             <input type="email" name="mail" id="mail" placeholder="Insira um @email valido"
               ng-model="frmMatricula.email">
-            <p>email selecionado: {{ frmMatricula.email }}</p>
             <div class="error">
               <img src="./assets/icons/alert-circle.svg" alt="Ícone de alerta">
               <span>Insira um e-mail válido</span>
@@ -261,19 +269,18 @@
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="study-shift" value="morning" id="morning" ng-model="frmMatricula.turno">
+                <input type="radio" name="study-shift" value="Manhã" id="morning" ng-model="frmMatricula.turno">
                 <img src="./assets/icons/sun-cloud-02.svg" alt="ícone de sol com nuvem">
                 <label for="morning">Manhã</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="study-shift" value="evening" id="evening" ng-model="frmMatricula.turno">
+                <input type="radio" name="study-shift" value="Tarde" id="evening" ng-model="frmMatricula.turno">
                 <img src="./assets/icons/sun-02.svg" alt="ícone de sol">
                 <label for="evening">Tarde</label>
               </div>
 
-              <p>turno selecionado: {{ frmMatricula.turno }}</p>
             </div>
           </div>
 
@@ -284,72 +291,60 @@
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="football" id="football" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Futebol" id="football" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/football.svg" alt="Bola de futebol">
                 <label for="morning">Futebol</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="basketball" id="basketball" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Basquete" id="basketball" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/basketball-02.svg" alt="Bola de basquete">
                 <label for="evening">Basquete</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="swimming" id="swimming" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Natação" id="swimming" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/swimming.svg" alt="ícone de Natação">
                 <label for="evening">Natação</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="yoga" id="yoga" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Yoga" id="yoga" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/yoga-02.svg" alt="ícone de yoga">
                 <label for="evening">Yoga</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="volleyball" id="volleyball" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Vôlei" id="volleyball" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/volleyball.svg" alt="bola de vôlei">
                 <label for="evening">Vôlei</label>
               </div>
 
               <div class="radio-inner">
                 <div class="radio-image"></div>
-                <input type="radio" name="sport" value="boxing" id="boxing" ng-model="frmMatricula.esporte">
+                <input type="radio" name="sport" value="Boxe" id="boxing" ng-model="frmMatricula.esporte">
                 <img src="./assets/icons/boxing-glove-01.svg" alt="Luva de Boxe">
                 <label for="evening">Boxe</label>
               </div>
-
-              <p>esporte selecionado: {{ frmMatricula.esporte }}</p>
 
             </div>
           </div>
 
         </fieldset>
 
-        <div class="terms-wrapper input-wrapper checkbox-wrapper">
-          <div class="checkbox-image"></div>
-          <input type="checkbox" name="terms" id="terms">
-
-          <label for="terms">Declaro que li e concordo com os <a href="#">Termos e Condições</a> e com a <a
-              href="#">Política
-              de Privacidade</a> da escola Estrela do Amanhã.</label>
-
-        </div>
-
         <div class="actions-wrapper">
-          <button class="btn-secondary" type="button">Voltar</button>
+          <a href="./index.html"><button class="btn-secondary" type="button">Voltar</button></a>
 
           <button class="btn-primary" type="button" ng-click="adicionarPessoa()">
             Fazer matrícula
           </button>
-          <div class="error" ng-show="ErroInclusao"><span>{{ErroInclusao}}</span></div>
-        </div>
 
+        </div>
+        <div class="error" ng-show="ErroInclusao"><span>{{ErroInclusao}}</span></div>
       </form>
     </div>
 

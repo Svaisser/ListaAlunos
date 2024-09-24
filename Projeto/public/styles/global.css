@@ -26,13 +26,29 @@
     --semantic-error: #DC2626;
 }
 
+.back {
+    & a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+
+        & span {
+            margin-left: .5rem;
+        }
+    }
+}
+
+
 body {
     font: var(--text);
     color: var(--text-secondary);
-    background-color: #FEE7D6 ;
+    background-color: #FEE7D6;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     color: var(--text-primary);
 }
 
@@ -44,6 +60,17 @@ h1, h2, h3, h4 {
     flex: 1;
 }
 
-.flex-2{
+.flex-2 {
     flex: 2;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    & a {
+        position: absolute;
+        right: 1px;
+    }
 }

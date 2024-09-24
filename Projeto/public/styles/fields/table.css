@@ -1,0 +1,73 @@
+/* Estilos gerais da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #f9f9f9;
+
+    & img {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/* Estilo do cabeçalho da tabela */
+thead {
+    background-color: #f0a755;
+    color: white;
+}
+
+th, td {
+    padding: .5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo das células da tabela */
+td {
+    background-color: #ffffff;
+}
+
+/* Estilo das bordas e separação */
+th {
+    border: 1px solid #ddd;
+}
+
+/* Estilo da última linha */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilo para dispositivos móveis */
+@media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin-bottom: 15px;
+    }
+
+    td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    td:before {
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+}
+
+a {
+    text-decoration: none;
+}

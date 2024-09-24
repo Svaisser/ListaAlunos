@@ -1,144 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR" ng-app="meuApp">
 
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de alunos</title>
-
+  <title>Lista Alunos</title>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-
   <link rel="stylesheet" href="./styles/index.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
 
   <script>
     angular.module('meuApp', [])
       .controller('MeuController', function ($scope, $http) {
         $scope.listaPessoas = [];
-        $scope.ErroInclusao = "";
 
-        $scope.btnLoandingList = true;
-
-        $scope.frmMatricula = {
-          "nomeCrianca": "",
-          "dataNascimento": "",
-          "genero": "",
-          "cep": "",
-          "rua": "",
-          "numero": "",
-          "cidade": "",
-          "estado": "",
-          "nomeResp": "",
-          "telefone": "",
-          "email": "",
-          "turno": "",
-          "esporte": ""
+        $scope.carregarPessoas = function () {
+          $http(
+            {
+              url: 'pessoas.json',
+              method: 'GET'
+            }).then(function (response) {
+              $scope.listaPessoas = response.data;
+            })
         }
 
-        $scope.frmExclusao = {
-          "nome": "",
-        }
+        $scope.carregarPessoas();
 
-        $scope.listaPessoas.push($scope.pessoa1, $scope.pessoa2);
-
-        $scope.exibirFormularioInclusao = false;
-        $scope.exibirFormularioExclusao = false;
-
-        $scope.adicionarPessoa = function () {
-          $scope.ErroInclusao = '';
-          var crianca = $scope.frmMatricula.nomeCrianca;
-          var dataN = $scope.frmMatricula.dataNascimento;
-          var gender = $scope.frmMatricula.genero;
-          var cep = $scope.frmMatricula.cep;
-          var rua = $scope.frmMatricula.rua;
-          var numero = $scope.frmMatricula.numero;
-          var cidade = $scope.frmMatricula.cidade;
-          var estado = $scope.frmMatricula.estado;
-          var nomeResp = $scope.frmMatricula.nomeResp;
-          var telefone = $scope.frmMatricula.telefone;
-          var email = $scope.frmMatricula.email;
-          var turno = $scope.frmMatricula.turno;
-          var esporte = $scope.frmMatricula.esporte;
-
-          alert(crianca + " " + dataN + " " + gender);
-          alert(cep + " " + rua + " " + numero + " " + cidade + " " + estado);
-          alert(nomeResp + " " + telefone + " " + email);
-          alert(turno + " " + esporte);
-
-
-          if (!$scope.frmMatricula.nomeCrianca || !$scope.frmMatricula.dataNascimento || !$scope.frmMatricula.genero || !$scope.frmMatricula.cep || !$scope.frmMatricula.rua || !$scope.frmMatricula.numero || !$scope.frmMatricula.cidade || !$scope.frmMatricula.estado || !$scope.frmMatricula.nomeResp || !$scope.frmMatricula.telefone || !$scope.frmMatricula.email || !$scope.frmMatricula.turno || $scope.frmMatricula.esporte) {
-            $scope.ErroInclusao = 'Por favor, preencha todos os campos.';
-            return;
-          }
-
-          $scope.listaPessoas.push({
-            "nomeCrianca": crianca,
-            "dataNascimento": dataN,
-            "genero": gender,
-            "cep": cep,
-            "rua": rua,
-            "numero": numero,
-            "cidade": cidade,
-            "estado": estado,
-            "nomeResp": nomeResp,
-            "telefone": telefone,
-            "email": email,
-            "turno": turno,
-            "esporte": esporte
-          })
-
-          $http({
-            url: '/addPessoa',  // Endereço do endpoint do servidor
-            method: 'POST',
-            data: {
-              "nomeCrianca": crianca,
-              "dataNascimento": dataN,
-              "genero": gender,
-              "cep": cep,
-              "rua": rua,
-              "numero": numero,
-              "cidade": cidade,
-              "estado": estado,
-              "nomeResp": nomeResp,
-              "telefone": telefone,
-              "email": email,
-              "turno": turno,
-              "esporte": esporte
-            }
-          }).then(function (response) {
-            console.log(response.data); // Mensagem de sucesso
-            
-          }).catch(function (error) {
-            $scope.ErroInclusao = 'Erro ao adicionar pessoa: ' + error.message;
-          });
-
-          $scope.frmMatricula = {
-            "nomeCrianca": "",
-            "dataNascimento": "",
-            "genero": "",
-            "cep": "",
-            "rua": "",
-            "numero": "",
-            "cidade": "",
-            "estado": "",
-            "nomeResp": "",
-            "telefone": "",
-            "email": "",
-            "turno": "",
-            "esporte": ""
-          }
-
-          $scope.exibirFormularioInclusao = false;
-        };
-
-        $scope.excluirPessoa = function () {
+        $scope.excluirPessoa = function (nomeCrianca) {
           $scope.ErroExclusao = '';
-          var nome = $scope.frmExclusao.nome;
+          var nome = nomeCrianca
 
           if (nome === '') {
             $scope.ErroExclusao = 'Por favor, preencha o campo.';
@@ -149,7 +38,7 @@
             url: '/deletePessoa',
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            data: { nome: nome }
+            data: { nomeCrianca: nome }
           }).then(function (response) {
             // Remover da lista local
             var index = $scope.listaPessoas.findIndex(function (p) {
@@ -163,80 +52,70 @@
             $scope.frmExclusao.nome = '';
             $scope.exibirFormularioExclusao = false;
             alert(response.data); // Mensagem de sucesso
+            $scope.carregarPessoas();
           }).catch(function (error) {
             $scope.ErroExclusao = error.data || 'Erro ao excluir a pessoa.';
+            alert($scope.ErroExclusao);
           });
         };
-
-
-        $scope.carregarPessoas = function () {
-          $http(
-            {
-              url: 'pessoas.json',
-              method: 'GET'
-            }).then(function (response) {
-              $scope.listaPessoas = response.data;
-            })
-          $scope.btnLoandingList = false;
-        }
       });
   </script>
 </head>
 
-<body>
-
+<body ng-controller="MeuController">
   <main>
-    <div ng-controller="MeuController">
+    <div>
       <div>
-        <div>
+        <div class="head">
           <h1>Lista Pessoas</h1>
-          <button type="button" ng-click="carregarPessoas()" ng-show="btnLoandingList">Carregar
-            Lista</button>
           <a href="./cadastro.html"><button type="button" ng-click="exibirFormularioInclusao = 'true';"
               ng-hide="exibirFormularioInclusao">Adicionar
               Pessoa</button></a>
-          <button type="button" ng-click="exibirFormularioExclusao = 'true';" ng-hide="exibirFormularioExclusao">Excluir
-            Pessoa</button>
-        </div>
-
-
-        <div ng-show="exibirFormularioExclusao">
-          <h2>Excluir Pessoa</h2>
-          <div>
-            <label for="dName">Nome:</label>
-            <input type="text" name="dName" id="dName" ng-model="frmExclusao.nome">
-          </div>
-          <div>
-            <button ng-click="excluirPessoa()" type="button">Remover</button>
-            <button ng-click="exibirFormularioExclusao = false">Voltar</button>
-          </div>
-          <div ng-show="ErroExclusao" class="msgErro">
-
-            {{ ErroExclusao + frmExclusao.nome}}
-          </div>
         </div>
 
         <div>
-          <div>
-            <table>
-              <thead>
 
-                <tr>
-                  <th>Nome</th>
-                  <th>Idade</th>
-                  <th>País</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="pessoa in listaPessoas">
-                  <td>{{pessoa.nome}}</td>
-                  <td>{{pessoa.idade}}</td>
-                  <td>{{pessoa.pais}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <table>
+            <thead>
 
-          </div>
+              <tr>
+                <th>Nome da criança</th>
+                <th>Data de nascimento</th>
+                <th>Gênero</th>
+                <th>CEP</th>
+                <th>Rua</th>
+                <th>Número</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Nome do responsável</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Turno</th>
+                <th>Esporte</th>
+                <th>Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="pessoa in listaPessoas">
+                <td>{{pessoa.nomeCrianca}}</td>
+                <td>{{pessoa.dataNascimento}}</td>
+                <td>{{pessoa.genero}}</td>
+                <td>{{pessoa.cep}}</td>
+                <td>{{pessoa.rua}}</td>
+                <td>{{pessoa.numero}}</td>
+                <td>{{pessoa.cidade}}</td>
+                <td>{{pessoa.estado}}</td>
+                <td>{{pessoa.nomeResp}}</td>
+                <td>{{pessoa.telefone}}</td>
+                <td>{{pessoa.email}}</td>
+                <td>{{pessoa.turno}}</td>
+                <td>{{pessoa.esporte}}</td>
+                <td><button ng-click="excluirPessoa(pessoa.nomeCrianca)"><img src="./assets/icons/icons8-lixo.svg"
+                      alt="Ícone de excluir"></button></td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>

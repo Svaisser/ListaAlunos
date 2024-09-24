@@ -1,23 +1,8 @@
 [
   {
-    "nomeCrianca": "João",
-    "dataNascimento": "2004-11-14T02:00:00.000Z",
-    "genero": "male",
-    "cep": "88816-262",
-    "rua": "Rua Alcidinei Rezin Vicente",
-    "numero": 45,
-    "cidade": "Criciuma",
-    "estado": "SC",
-    "nomeResp": "João",
-    "telefone": "48996456026",
-    "email": "svaisserjv@gmail.com",
-    "turno": "morning",
-    "esporte": "football"
-  },
-  {
-    "nomeCrianca": "João",
-    "dataNascimento": "2004-11-14T02:00:00.000Z",
-    "genero": "male",
+    "nomeCrianca": "Raul GIl",
+    "dataNascimento": "22/03/1978",
+    "genero": "Masculino",
     "cep": "88816-262",
     "rua": "Rua Alcidinei Rezin Vicente",
     "numero": 45,
@@ -26,37 +11,7 @@
     "nomeResp": "João",
     "telefone": "(48) 99645-6026",
     "email": "svaisserjv@gmail.com",
-    "turno": "evening",
-    "esporte": "boxing"
-  },
-  {
-    "nomeCrianca": "Edrik",
-    "dataNascimento": "2003-12-18T02:00:00.000Z",
-    "genero": "male",
-    "cep": "88816-262",
-    "rua": "Rua Alcidinei Rezin Vicente",
-    "numero": 45,
-    "cidade": "Criciuma",
-    "estado": "SC",
-    "nomeResp": "Edrik",
-    "telefone": "(48) 99645-6026",
-    "email": "svaisserjv@gmail.com",
-    "turno": "evening",
-    "esporte": "swimming"
-  },
-  {
-    "nomeCrianca": "Pedro",
-    "dataNascimento": "2006-05-13T03:00:00.000Z",
-    "genero": "male",
-    "cep": "88816-262",
-    "rua": "Rua Alcidinei Rezin Vicente",
-    "numero": 45,
-    "cidade": "Criciuma",
-    "estado": "SC",
-    "nomeResp": "João",
-    "telefone": "(48) 99645-6026",
-    "email": "svaisserjv@gmail.com",
-    "turno": "morning",
-    "esporte": "basketball"
+    "turno": "Manhã",
+    "esporte": "Basquete"
   }
 ]
