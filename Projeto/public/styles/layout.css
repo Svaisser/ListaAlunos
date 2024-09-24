@@ -1,0 +1,22 @@
+main {
+    overflow: auto;
+    padding: 4rem;
+    max-width: 1200px;
+    display: flex;
+    margin-block: 5rem;
+    margin-inline: auto;
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+
+    & .back {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    & h1 {
+        font: 600 1.5rem/1.25 var(--font-family);
+        margin-bottom: .5rem;
+    }
+}

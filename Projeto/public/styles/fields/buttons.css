@@ -1,0 +1,33 @@
+button {
+    all: unset;
+    font-weight: 500;
+    color: var(--text-highlight);
+    padding: .75rem 1.5rem;
+    border-radius: .5rem;
+    cursor: pointer;
+
+    &.btn-primary {
+        color: white;
+        background-color: var(--brand-dark);
+        border: 1px solid var(--brand-dark);
+
+        &:hover , &:focus {
+            background-color: var(--brand-mid);
+            border: 1px solid var(--brand-mid);
+        }
+    }
+
+    &.btn-secondary {
+        margin-left: auto;
+        color: var(--text-highlight);
+        border: 1px solid var(--text-highlight);
+
+        &:hover , &:focus {
+            color: var(--semantic-error);
+            border: 1px solid var(--semantic-error);
+            outline: .3rem solid var(--surface-secondary);
+            outline-offset: .1px;
+            /*Esse atributo serve para fazer funcionar a borda no safari. */
+        }
+    }
+}

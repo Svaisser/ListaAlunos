@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact List</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+
+  <link rel="stylesheet" href="./styles/index.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <script>
+    angular.module('meuApp', [])
+      .controller('MeuController', function ($scope, $http , $window) {
+        $scope.listaPessoas = [];
+        $scope.ErroInclusao = "";
+
+        $scope.frmMatricula = {
+          "nomeCrianca": "",
+          "dataNascimento": "",
+          "genero": "",
+          "cep": "",
+          "rua": "",
+          "numero": "",
+          "cidade": "",
+          "estado": "",
+          "nomeResp": "",
+          "telefone": "",
+          "email": "",
+          "turno": "",
+          "esporte": ""
+        }
+
+        $scope.adicionarPessoa = function () {
+          $scope.ErroInclusao = ''; // Limpa erros anteriores
+
+          // Campos obrigatórios
+          var crianca = $scope.frmMatricula.nomeCrianca;
+          var dataN = $scope.frmMatricula.dataNascimento;
+          var gender = $scope.frmMatricula.genero;
+          var cep = $scope.frmMatricula.cep;
+          var rua = $scope.frmMatricula.rua;
+          var numero = $scope.frmMatricula.numero;
+          var cidade = $scope.frmMatricula.cidade;
+          var estado = $scope.frmMatricula.estado;
+          var nomeResp = $scope.frmMatricula.nomeResp;
+          var telefone = $scope.frmMatricula.telefone;
+          var email = $scope.frmMatricula.email;
+          var turno = $scope.frmMatricula.turno;
+          var esporte = $scope.frmMatricula.esporte;
+
+          // Verifica se todos os campos estão preenchidos
+          if (!crianca || !dataN || !gender || !cep || !rua || !numero || !cidade || !estado || !nomeResp || !telefone || !email || !turno || !esporte) {
+            $scope.ErroInclusao = 'Por favor, preencha todos os campos obrigatórios.';
+            return;
+          }
+
+          // Validações específicas
+          if (!/^\d{5}-\d{3}$/.test(cep)) { // Verifica se o CEP está no formato 00000-000
+            $scope.ErroInclusao = 'CEP inválido. Formato esperado: 00000-000.';
+            return;
+          }
+
+          if (!/\(\d{2}\) \d{4,5}-\d{4}/.test(telefone)) { // Verifica se o telefone está no formato (00) 00000-0000
+            $scope.ErroInclusao = 'Telefone inválido. Formato esperado: (00) 00000-0000.';
+            return;
+          }
+
+          if (!/\S+@\S+\.\S+/.test(email)) { // Verifica se o email está em formato válido
+            $scope.ErroInclusao = 'Email inválido. Insira um email válido.';
+            return;
+          }
+
+          // Se passou por todas as validações, prossegue com o cadastro
+          $scope.listaPessoas.push({
+            "nomeCrianca": crianca,
+            "dataNascimento": dataN,
+            "genero": gender,
+            "cep": cep,
+            "rua": rua,
+            "numero": numero,
+            "cidade": cidade,
+            "estado": estado,
+            "nomeResp": nomeResp,
+            "telefone": telefone,
+            "email": email,
+            "turno": turno,
+            "esporte": esporte
+          });
+
+          // Envia os dados para o servidor
+          $http({
+            url: '/addPessoa',
+            method: 'POST',
+            data: {
+              "nomeCrianca": crianca,
+              "dataNascimento": dataN,
+              "genero": gender,
+              "cep": cep,
+              "rua": rua,
+              "numero": numero,
+              "cidade": cidade,
+              "estado": estado,
+              "nomeResp": nomeResp,
+              "telefone": telefone,
+              "email": email,
+              "turno": turno,
+              "esporte": esporte
+            }
+          }).then(function (response) {
+            console.log(response.data); // Mensagem de sucesso
+            $window.location.href = "index.html";
+          }).catch(function (error) {
+            $scope.ErroInclusao = 'Erro ao adicionar pessoa: ' + error.message;
+          });
+
+          // Limpa o formulário após adicionar
+          $scope.frmMatricula = {
+            "nomeCrianca": "",
+            "dataNascimento": "",
+            "genero": "",
+            "cep": "",
+            "rua": "",
+            "numero": "",
+            "cidade": "",
+            "estado": "",
+            "nomeResp": "",
+            "telefone": "",
+            "email": "",
+            "turno": "",
+            "esporte": ""
+          };
+
+          $scope.exibirFormularioInclusao = false;
+        };
+
+      });
+  </script>
+</head>
+
+<body ng-app="meuApp" id="app">
+
+  <main ng-controller="MeuController">
+    <div class="main-container">
+      <div class="back">
+        <img src="./assets/icons/arrow-left-02.svg" alt="Ícone de voltar">
+        <span>Voltar</span>
+      </div>
+
+      <h1>Formulário de matrícula</h1>
+      <p>Preencha os dados abaixo para matricular seu filho na escola de educação infantil Estrelas do Amanhã.
+      </p>
+
+      <form enctype="multipart/form-data" method="post">
+        <fieldset class="child-info">
+          <legend>Informações da criança</legend>
+
+          <div class="input-wrapper">
+            <label for="fullname">Nome completo</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Qual o nome da criança?"
+              ng-model="frmMatricula.nomeCrianca">
+            <p>nomeCrianca selecionado: {{ frmMatricula.nomeCrianca }}</p>
+          </div>
+
+          <div class="input-wrapper">
+            <label for="birth">Data de nascimento</label>
+            <input type="date" id="birth" name="birth" lang="pt-BR" ng-model="frmMatricula.dataNascimento">
+            <p>data selecionado: {{ frmMatricula.dataNascimento }}</p>
+          </div>
+
+          <div class="select-wrapper">
+            <label for="gender">Gênero</label>
+            <select id="gender" name="gender" ng-model="frmMatricula.genero">
+              <option value="">Selecione o gênero</option>
+              <option value="male">Masculino</option>
+              <option value="female">Feminino</option>
+            </select>
+            <p>Gênero selecionado: {{ frmMatricula.genero }}</p>
+          </div>
+
+        </fieldset>
+
+        <fieldset class="address">
+          <legend>Endereço residencial</legend>
+
+          <div class="input-wrapper">
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" ng-model="frmMatricula.cep" placeholder="00000-000">
+            <p>cep selecionado: {{ frmMatricula.cep }}</p>
+          </div>
+
+          <div class="flex">
+            <div class="input-wrapper flex-2">
+              <label for="street">Rua</label>
+              <input type="text" id="street" name="street" ng-model="frmMatricula.rua">
+              <p>rua selecionado: {{ frmMatricula.rua }}</p>
+            </div>
+            <div class="input-wrapper flex-1">
+              <label for="number">Número</label>
+              <input type="number" id="number" name="number" ng-model="frmMatricula.numero">
+              <p>numero selecionado: {{ frmMatricula.numero }}</p>
+            </div>
+          </div>
+
+          <div class="flex">
+            <div class="input-wrapper flex-2">
+              <label for="city">Cidade</label>
+              <input type="text" id="city" name="city" ng-model="frmMatricula.cidade">
+              <p>cidade selecionado: {{ frmMatricula.cidade }}</p>
+            </div>
+            <div class="input-wrapper flex-1">
+              <label for="state">Estado</label>
+              <input type="text" id="state" name="state" ng-model="frmMatricula.estado">
+              <p>estado selecionado: {{ frmMatricula.estado }}</p>
+            </div>
+          </div>
+
+        </fieldset>
+
+        <fieldset class="guardian">
+          <legend>Informações do responśavel</legend>
+
+          <div class="input-wrapper">
+            <label for="guardian">Nome do responsável</label>
+            <input type="text" id="guardian" name="guardian" ng-model="frmMatricula.nomeResp">
+            <small>Principal responsável legal e contato de emergência</small>
+            <p>nomeResp selecionado: {{ frmMatricula.nomeResp }}</p>
+          </div>
+
+          <div class="class-wrapper">
+            <label for="phone">Telefone</label>
+            <input type="tel" name="phone" id="phone" placeholder="(11) 99999-9999" ng-model="frmMatricula.telefone">
+            <p>telefone selecionado: {{ frmMatricula.telefone }}</p>
+          </div>
+
+          <div class="input-wrapper">
+            <label for="mail">E-mail</label>
+            <input type="email" name="mail" id="mail" placeholder="Insira um @email valido"
+              ng-model="frmMatricula.email">
+            <p>email selecionado: {{ frmMatricula.email }}</p>
+            <div class="error">
+              <img src="./assets/icons/alert-circle.svg" alt="Ícone de alerta">
+              <span>Insira um e-mail válido</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="enroll-options">
+          <legend>Opções de matrícula</legend>
+
+          <div class="input-wrapper">
+            <label>Selecione o turno de estudo</label>
+
+            <div class="radio-wrapper">
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="study-shift" value="morning" id="morning" ng-model="frmMatricula.turno">
+                <img src="./assets/icons/sun-cloud-02.svg" alt="ícone de sol com nuvem">
+                <label for="morning">Manhã</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="study-shift" value="evening" id="evening" ng-model="frmMatricula.turno">
+                <img src="./assets/icons/sun-02.svg" alt="ícone de sol">
+                <label for="evening">Tarde</label>
+              </div>
+
+              <p>turno selecionado: {{ frmMatricula.turno }}</p>
+            </div>
+          </div>
+
+          <div class="input-wrapper">
+            <label>Em qual esporte você gostaria de inscrever seu filho?</label>
+
+            <div class="radio-wrapper">
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="football" id="football" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/football.svg" alt="Bola de futebol">
+                <label for="morning">Futebol</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="basketball" id="basketball" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/basketball-02.svg" alt="Bola de basquete">
+                <label for="evening">Basquete</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="swimming" id="swimming" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/swimming.svg" alt="ícone de Natação">
+                <label for="evening">Natação</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="yoga" id="yoga" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/yoga-02.svg" alt="ícone de yoga">
+                <label for="evening">Yoga</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="volleyball" id="volleyball" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/volleyball.svg" alt="bola de vôlei">
+                <label for="evening">Vôlei</label>
+              </div>
+
+              <div class="radio-inner">
+                <div class="radio-image"></div>
+                <input type="radio" name="sport" value="boxing" id="boxing" ng-model="frmMatricula.esporte">
+                <img src="./assets/icons/boxing-glove-01.svg" alt="Luva de Boxe">
+                <label for="evening">Boxe</label>
+              </div>
+
+              <p>esporte selecionado: {{ frmMatricula.esporte }}</p>
+
+            </div>
+          </div>
+
+        </fieldset>
+
+        <div class="terms-wrapper input-wrapper checkbox-wrapper">
+          <div class="checkbox-image"></div>
+          <input type="checkbox" name="terms" id="terms">
+
+          <label for="terms">Declaro que li e concordo com os <a href="#">Termos e Condições</a> e com a <a
+              href="#">Política
+              de Privacidade</a> da escola Estrela do Amanhã.</label>
+
+        </div>
+
+        <div class="actions-wrapper">
+          <button class="btn-secondary" type="button">Voltar</button>
+
+          <button class="btn-primary" type="button" ng-click="adicionarPessoa()">
+            Fazer matrícula
+          </button>
+          <div class="error" ng-show="ErroInclusao"><span>{{ErroInclusao}}</span></div>
+        </div>
+
+      </form>
+    </div>
+
+
+  </main>
+
+</body>
+
+</html>
