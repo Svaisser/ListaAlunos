@@ -17,8 +17,9 @@ button {
         }
     }
 
-    &.btn-secondary {
-        margin-left: auto;
+    &.addBtn {
+        margin-bottom: .5rem;
+        padding: .3rem;
         color: var(--text-highlight);
         border: 1px solid var(--text-highlight);
 
