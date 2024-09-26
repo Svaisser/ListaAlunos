@@ -5,7 +5,7 @@ Para os meus primeiros passos com o Angular.JS decidi unir o que sabia de formul
 </p>
 
 <p align="center">
-  <img alt="Página Web com a lista de alunos" src=".github/preview0.jpg" width="100%">
+  <img alt="Página Web com a lista de alunos" src=".github/preview0.jpg" width="100%" style="border-radius:16px;">
 </p>
 
 ## 🚀 Tecnologias
@@ -18,5 +18,5 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - Git e Github
 
 <p align="center">
-  <img alt="Página Web com a lista de alunos" src=".github/preview1.jpg" width="100%">
+  <img alt="Página Web com a lista de alunos" src=".github/preview1.jpg" width="100%" style="border-radius:16px;">
 </p>
