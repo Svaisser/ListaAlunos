@@ -40,16 +40,6 @@
             headers: { 'Content-Type': 'application/json' },
             data: { nomeCrianca: nome }
           }).then(function (response) {
-            // Remover da lista local
-            var index = $scope.listaPessoas.findIndex(function (p) {
-              return p.nome === nome;
-            });
-
-            if (index !== -1) {
-              $scope.listaPessoas.splice(index, 1);
-            }
-
-            $scope.frmExclusao.nome = '';
             $scope.exibirFormularioExclusao = false;
             alert(response.data); // Mensagem de sucesso
             $scope.carregarPessoas();
