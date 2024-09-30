@@ -133,7 +133,7 @@
             }
           }).then(function (response) {
             console.log(response.data); // Mensagem de sucesso
-            // $window.location.href = "index.html";
+            $window.location.href = "index.html";
           }).catch(function (error) {
             $scope.ErroInclusao = 'Erro ao adicionar pessoa: ' + error.message;
           });
